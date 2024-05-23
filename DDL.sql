@@ -1,3 +1,6 @@
+--DROP SCHEMA sistema_eleitoral CASCADE;
+--CREATE SCHEMA sistema_eleitoral;
+
 CREATE TABLE Processo_judicial (
     id_processo SERIAL PRIMARY KEY,
     dt_inicio DATE NOT NULL,
@@ -5,7 +8,7 @@ CREATE TABLE Processo_judicial (
     ds_procedencia VARCHAR(20) DEFAULT NULL,
     st_processo VARCHAR(20) DEFAULT 'Em tramitação',
 
-    CONSTRAINT ck_procedencia_ds CHECK(ds_procedencia IN ('Procedente', 'Não Procedente') OR ds_procedencia IS NULL)
+    CONSTRAINT ck_procedencia_ds CHECK(ds_procedencia IN ('Procedente', 'Não Procedente') OR ds_procedencia IS NULL),
     CONSTRAINT ck_processo_st CHECK(st_processo IN ('Em tramitação', 'Julgado'))
 );
 
@@ -67,7 +70,8 @@ CREATE TABLE Estado (
 CREATE TABLE Cidade (
     nm_pais VARCHAR(100),
     nm_estado VARCHAR(100),
-    nm_cidade VARCHAR(200) PRIMARY KEY,
+    nm_cidade VARCHAR(200),
+    PRIMARY KEY (nm_pais, nm_estado, nm_cidade),
     CONSTRAINT fk_pais_estado_nm FOREIGN KEY (nm_pais, nm_estado) REFERENCES Estado(nm_pais, nm_estado) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -95,6 +99,7 @@ CREATE TABLE Cargo (
     )
 );
 
+-- talvez colocar um ds_status pra decidir se eleito ou não, e escrever um trigger para, por exemplo, eleger 1 presidente pelo mais votado, 500 deputados...
 CREATE TABLE Candidatura (
     id_candidatura SERIAL PRIMARY KEY,
     nr_cpf_candidato NUMERIC(11) NOT NULL UNIQUE,
@@ -109,10 +114,11 @@ CREATE TABLE Candidatura (
 );
 
 CREATE TABLE Equipe_de_apoio (
-    id_equipe SERIAL PRIMARY KEY,
+    id_equipe SERIAL,
     id_candidatura INTEGER,
     nm_equipe VARCHAR(200) NOT NULL,
     an_eleicao NUMERIC(4) NOT NULL,
+    PRIMARY KEY (id_equipe, an_eleicao),
     CONSTRAINT fk_candidatura_id FOREIGN KEY (id_candidatura) REFERENCES Candidatura(id_candidatura) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT un_equipe_ano UNIQUE (nm_equipe, an_eleicao)
 );
