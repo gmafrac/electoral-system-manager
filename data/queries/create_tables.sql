@@ -157,7 +157,3 @@ CREATE TABLE Candidatura_doacoes_PF (
     CONSTRAINT fk_cpf_nr FOREIGN KEY (nr_cpf_doador) REFERENCES Doador(nr_cpf) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT fk_candidatura_id FOREIGN KEY (id_candidatura) REFERENCES Candidatura(id_candidatura) ON DELETE SET NULL ON UPDATE CASCADE
 );
-
-
-
-
