@@ -107,6 +107,8 @@ CREATE TABLE Candidatura (
     id_cargo INTEGER,
     an_eleicao NUMERIC(4),
     nr_pleito INTEGER,
+    ds_status VARCHAR(20) DEFAULT 'Não Eleito'
+
     CONSTRAINT fk_cpf_candidato FOREIGN KEY (nr_cpf_candidato) REFERENCES Candidato(nr_cpf) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_cpf_vice FOREIGN KEY (nr_cpf_vice) REFERENCES Candidato(nr_cpf) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT ck_cpf_dif CHECK (nr_cpf_candidato IS DISTINCT FROM nr_cpf_vice),
