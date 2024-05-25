@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Sistema Eleitoral{% endblock %}
+
+{% block content %}
+<h1>Consulta</h1>
+<p> Nessa página é possível listar e remover todos os dados do sistema eleitoral.</p>
+<div class="row">
+    <div class="col">
+        <form method="POST">
+            <label for="table">Selecione a tabela:</label>
+            <select name="table" id="table" onchange="changeTable()">
+                {% for table in tables %}
+                    <option value="{{ table }}" {% if table == selected_table %}selected{% endif %}>{{ table }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+    <div class="col">
+        <button type="button" onclick="confirmDeletion()">Deletar</button>
+    </div>
+</div>
+
+<form id="deleteForm" method="POST" action="{{ url_for('delete') }}">
+    <input type="hidden" name="table" value="{{ selected_table }}">
+    <div style="overflow-x:auto;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Selecionar</th>
+                    {% for colname in colnames %}
+                        <th>{{ colname }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    <td><input type="checkbox" name="row_ids" value="{{ row[0] }}"></td>
+                    {% for item in row %}
+                        <td>{{ item }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+   
+</form>
+
+
+<script>
+function changeTable() {
+    document.querySelector("form").submit();
+}
+
+function confirmDeletion() {
+    if (confirm("Tem certeza de que deseja deletar as linhas selecionadas?")) {
+        document.getElementById("deleteForm").submit();
+    }
+}
+</script>
+{% endblock %}
