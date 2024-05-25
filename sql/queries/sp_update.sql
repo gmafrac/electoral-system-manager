@@ -17,7 +17,6 @@ BEGIN
 END;
 $$;
 
-
 CREATE OR REPLACE PROCEDURE sp_update_individuo(
     v_nr_cpf NUMERIC(11),
     v_nm_pessoa VARCHAR DEFAULT NULL,
@@ -32,7 +31,6 @@ BEGIN
     WHERE nr_cpf = v_nr_cpf;
 END;
 $$;
-
 
 CREATE OR REPLACE PROCEDURE sp_update_partido(
     v_nr_partido NUMERIC(2),
@@ -113,8 +111,8 @@ CREATE OR REPLACE PROCEDURE sp_update_cargo(
     v_nm_pais VARCHAR(100),
     v_nm_estado VARCHAR DEFAULT NULL,
     v_nm_cidade VARCHAR DEFAULT NULL,
-    v_nm_cargo VARCHAR(100),
-    v_ds_representacao VARCHAR(100)
+    v_nm_cargo VARCHAR(100) DEFAULT NULL,
+    v_ds_representacao VARCHAR(100) DEFAULT NULL
 )
 LANGUAGE plpgsql
 AS $$
@@ -131,11 +129,11 @@ $$;
 
 CREATE OR REPLACE PROCEDURE sp_update_candidatura(
     v_id_candidatura INTEGER,
-    v_nr_cpf_candidato NUMERIC(11),
-    v_nr_cpf_vice NUMERIC(11),
-    v_id_cargo INTEGER,
-    v_an_eleicao NUMERIC(4),
-    v_nr_pleito INTEGER
+    v_nr_cpf_candidato NUMERIC(11) DEFAULT NULL,
+    v_nr_cpf_vice NUMERIC(11) DEFAULT NULL,
+    v_id_cargo INTEGER DEFAULT NULL,
+    v_an_eleicao NUMERIC(4) DEFAULT NULL,
+    v_nr_pleito INTEGER DEFAULT NULL
 )
 LANGUAGE plpgsql
 AS $$
@@ -152,9 +150,9 @@ $$;
 
 CREATE OR REPLACE PROCEDURE sp_update_equipe_de_apoio(
     v_id_equipe INTEGER,
-    v_id_candidatura INTEGER,
-    v_nm_equipe VARCHAR(200),
-    v_an_eleicao NUMERIC(4)
+    v_id_candidatura INTEGER DEFAULT NULL,
+    v_nm_equipe VARCHAR(200) DEFAULT NULL,
+    v_an_eleicao NUMERIC(4) DEFAULT NULL
 )
 LANGUAGE plpgsql
 AS $$
@@ -169,7 +167,7 @@ $$;
 
 CREATE OR REPLACE PROCEDURE sp_update_empresa(
     v_nr_cnpj NUMERIC(14),
-    v_nm_empresa VARCHAR(200)
+    v_nm_empresa VARCHAR(200) DEFAULT NULL
 )
 LANGUAGE plpgsql
 AS $$
@@ -181,10 +179,10 @@ END;
 $$;
 
 CREATE OR REPLACE PROCEDURE sp_update_candidatura_doacoes_pj(
-    v_nr_cnpj_doador NUMERIC(11),
+    v_nr_cnpj_doador NUMERIC(14),
     v_id_candidatura INTEGER,
     v_dt_doacao DATE,
-    v_vl_doacao MONEY
+    v_vl_doacao MONEY DEFAULT NULL
 )
 LANGUAGE plpgsql
 AS $$
@@ -199,7 +197,7 @@ CREATE OR REPLACE PROCEDURE sp_update_candidatura_doacoes_pf(
     v_nr_cpf_doador NUMERIC(11),
     v_id_candidatura INTEGER,
     v_dt_doacao DATE,
-    v_vl_doacao MONEY
+    v_vl_doacao MONEY DEFAULT NULL
 )
 LANGUAGE plpgsql
 AS $$
@@ -209,5 +207,3 @@ BEGIN
     WHERE nr_cpf_doador = v_nr_cpf_doador AND id_candidatura = v_id_candidatura AND dt_doacao = v_dt_doacao;
 END;
 $$;
-
-

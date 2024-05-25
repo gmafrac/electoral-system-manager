@@ -25,7 +25,6 @@ TABLES = {
 }
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Defina uma chave secreta para segurança da sessão
 
 db_initialization()
 
@@ -60,8 +59,8 @@ def delete():
     ids_to_delete = request.form.getlist("row_ids")
     
     if not ids_to_delete:
-        return jsonify({"status": "error", "message": "Nenhuma linha selecionada para exclusão"})
-
+        return index(table)
+    
     id_string = ', '.join(ids_to_delete)
     
     try:
@@ -85,8 +84,26 @@ def delete():
             conn.close()
 
 @app.route("/candidaturas")
-def candidaturas():
-    return render_template("candidaturas.html")
+def candidaturas(order = "id_candidatura"):
+    try:
+        with get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute(f"SELECT * FROM CANDIDATURA ORDER BY {order};")
+            data = cur.fetchall()
+            colnames = [desc[0] for desc in cur.description]
+            cur.close()
+        conn.close()
+        return render_template("candidaturas.html",data = data, colnames=colnames)
+    except Exception as e:
+        print(f"Ocorreu um erro: {e}")
+        flash("Ocorreu um erro ao acessar o banco de dados", "error")
+        return render_template("candidaturas.html",data = data, colnames=colnames)
+    
+@app.route("/candidatura_order", methods=["POST"])
+def candidatura_order():
+    order = request.form.get("column")
+    
+    return candidaturas(order)
 
 @app.route("/relatorios")
 def relatorios():

@@ -1,6 +1,3 @@
---DROP SCHEMA sistema_eleitoral CASCADE;
---CREATE SCHEMA sistema_eleitoral;
-
 CREATE TABLE IF NOT EXISTS Processo_judicial (
     id_processo SERIAL PRIMARY KEY,
     dt_inicio DATE NOT NULL,
@@ -13,7 +10,7 @@ CREATE TABLE IF NOT EXISTS Processo_judicial (
 );
 
 CREATE TABLE IF NOT EXISTS Individuo (
-    nr_cpf NUMERIC(11) PRIMARY KEY,
+    nr_cpf NUMERIC(14) PRIMARY KEY,
     nm_pessoa VARCHAR(200) NOT NULL,
     ds_tipo VARCHAR(10) DEFAULT NULL,
     CONSTRAINT ck_ds_tipo CHECK (ds_tipo IN ('Apoiador', 'Candidato', 'Doador') OR ds_tipo IS NULL)
@@ -21,19 +18,19 @@ CREATE TABLE IF NOT EXISTS Individuo (
 
 CREATE TABLE IF NOT EXISTS Processo_individuo (
     id_processo INTEGER,
-    nr_cpf NUMERIC(11),
+    nr_cpf NUMERIC(14),
     PRIMARY KEY (id_processo, nr_cpf),
     CONSTRAINT fk_processo_id FOREIGN KEY (id_processo) REFERENCES Processo_judicial(id_processo) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_cpf_nr FOREIGN KEY (nr_cpf) REFERENCES Individuo(nr_cpf) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Apoiador (
-    nr_cpf NUMERIC(11) PRIMARY KEY,
+    nr_cpf NUMERIC(14) PRIMARY KEY,
     CONSTRAINT fk_cpf_nr FOREIGN KEY (nr_cpf) REFERENCES Individuo(nr_cpf) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Doador (
-    nr_cpf NUMERIC(11) PRIMARY KEY,
+    nr_cpf NUMERIC(14) PRIMARY KEY,
     CONSTRAINT fk_cpf_nr FOREIGN KEY (nr_cpf) REFERENCES Individuo(nr_cpf) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -46,7 +43,7 @@ CREATE TABLE IF NOT EXISTS Partido (
 );
 
 CREATE TABLE IF NOT EXISTS Candidato (
-    nr_cpf NUMERIC(11),
+    nr_cpf NUMERIC(14),
     nr_partido NUMERIC(2),
     an_eleicao NUMERIC(4) NOT NULL,
     PRIMARY KEY (nr_cpf),
@@ -102,8 +99,8 @@ CREATE TABLE IF NOT EXISTS Cargo (
 -- talvez colocar um ds_status pra decidir se eleito ou não, e escrever um trigger para, por exemplo, eleger 1 presidente pelo mais votado, 500 deputados...
 CREATE TABLE IF NOT EXISTS Candidatura (
     id_candidatura SERIAL PRIMARY KEY,
-    nr_cpf_candidato NUMERIC(11) NOT NULL UNIQUE,
-    nr_cpf_vice NUMERIC(11),
+    nr_cpf_candidato NUMERIC(14) NOT NULL UNIQUE,
+    nr_cpf_vice NUMERIC(14),
     id_cargo INTEGER,
     an_eleicao NUMERIC(4),
     nr_pleito INTEGER,
@@ -124,7 +121,7 @@ CREATE TABLE IF NOT EXISTS Equipe_de_apoio (
 );
 
 CREATE TABLE IF NOT EXISTS Apoiador_Equipe (
-    nr_cpf NUMERIC(11),
+    nr_cpf NUMERIC(14),
     id_equipe INTEGER,
     an_eleicao NUMERIC(4),
     PRIMARY KEY (nr_cpf, id_equipe),
@@ -134,12 +131,12 @@ CREATE TABLE IF NOT EXISTS Apoiador_Equipe (
 );
 
 CREATE TABLE IF NOT EXISTS Empresa (
-    nr_cnpj NUMERIC(14) PRIMARY KEY,
+    nr_cnpj BIGINT PRIMARY KEY,
     nm_empresa VARCHAR(200)
 );
 
 CREATE TABLE IF NOT EXISTS Candidatura_doacoes_PJ (
-    nr_cnpj_doador NUMERIC(11),
+    nr_cnpj_doador BIGINT,
     id_candidatura INTEGER,
     dt_doacao DATE NOT NULL,
     vl_doacao MONEY NOT NULL,
@@ -149,7 +146,7 @@ CREATE TABLE IF NOT EXISTS Candidatura_doacoes_PJ (
 );
 
 CREATE TABLE IF NOT EXISTS Candidatura_doacoes_PF (
-    nr_cpf_doador NUMERIC(11),
+    nr_cpf_doador NUMERIC(14),
     id_candidatura INTEGER,
     dt_doacao DATE NOT NULL,
     vl_doacao MONEY NOT NULL,
@@ -157,11 +154,8 @@ CREATE TABLE IF NOT EXISTS Candidatura_doacoes_PF (
     CONSTRAINT fk_cpf_nr FOREIGN KEY (nr_cpf_doador) REFERENCES Doador(nr_cpf) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT fk_candidatura_id FOREIGN KEY (id_candidatura) REFERENCES Candidatura(id_candidatura) ON DELETE SET NULL ON UPDATE CASCADE
 );
-========
---DROP SCHEMA sistema_eleitoral CASCADE;
---CREATE SCHEMA sistema_eleitoral;
 
-CREATE TABLE Processo_judicial (
+CREATE TABLE IF NOT EXISTS Processo_judicial (
     id_processo SERIAL PRIMARY KEY,
     dt_inicio DATE NOT NULL,
     dt_fim DATE,
@@ -172,32 +166,32 @@ CREATE TABLE Processo_judicial (
     CONSTRAINT ck_processo_st CHECK(st_processo IN ('Em tramitação', 'Julgado'))
 );
 
-CREATE TABLE Individuo (
-    nr_cpf NUMERIC(11) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS Individuo (
+    nr_cpf NUMERIC(14) PRIMARY KEY,
     nm_pessoa VARCHAR(200) NOT NULL,
     ds_tipo VARCHAR(10) DEFAULT NULL,
     CONSTRAINT ck_ds_tipo CHECK (ds_tipo IN ('Apoiador', 'Candidato', 'Doador') OR ds_tipo IS NULL)
 );
 
-CREATE TABLE Processo_individuo (
+CREATE TABLE IF NOT EXISTS Processo_individuo (
     id_processo INTEGER,
-    nr_cpf NUMERIC(11),
+    nr_cpf NUMERIC(14),
     PRIMARY KEY (id_processo, nr_cpf),
     CONSTRAINT fk_processo_id FOREIGN KEY (id_processo) REFERENCES Processo_judicial(id_processo) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_cpf_nr FOREIGN KEY (nr_cpf) REFERENCES Individuo(nr_cpf) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE Apoiador (
-    nr_cpf NUMERIC(11) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS Apoiador (
+    nr_cpf NUMERIC(14) PRIMARY KEY,
     CONSTRAINT fk_cpf_nr FOREIGN KEY (nr_cpf) REFERENCES Individuo(nr_cpf) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE Doador (
-    nr_cpf NUMERIC(11) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS Doador (
+    nr_cpf NUMERIC(14) PRIMARY KEY,
     CONSTRAINT fk_cpf_nr FOREIGN KEY (nr_cpf) REFERENCES Individuo(nr_cpf) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE Partido (
+CREATE TABLE IF NOT EXISTS Partido (
     nr_partido NUMERIC(2) PRIMARY KEY,
     nm_partido VARCHAR(200) NOT NULL,
     ds_sigla VARCHAR(10) NOT NULL,
@@ -205,8 +199,8 @@ CREATE TABLE Partido (
     ds_intencoes VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE Candidato (
-    nr_cpf NUMERIC(11),
+CREATE TABLE IF NOT EXISTS Candidato (
+    nr_cpf NUMERIC(14),
     nr_partido NUMERIC(2),
     an_eleicao NUMERIC(4) NOT NULL,
     PRIMARY KEY (nr_cpf),
@@ -214,12 +208,12 @@ CREATE TABLE Candidato (
     CONSTRAINT fk_partido_nr FOREIGN KEY (nr_partido) REFERENCES Partido(nr_partido) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
-CREATE TABLE Pais (
+CREATE TABLE IF NOT EXISTS Pais (
     nm_pais VARCHAR(100) PRIMARY KEY,
     sigla_pais VARCHAR(3)
 );
 
-CREATE TABLE Estado (
+CREATE TABLE IF NOT EXISTS Estado (
     nm_pais VARCHAR(100),
     nm_estado VARCHAR(100),
     sigla_estado VARCHAR(2),
@@ -227,7 +221,7 @@ CREATE TABLE Estado (
     CONSTRAINT fk_pais_nm FOREIGN KEY (nm_pais) REFERENCES Pais(nm_pais) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE Cidade (
+CREATE TABLE IF NOT EXISTS Cidade (
     nm_pais VARCHAR(100),
     nm_estado VARCHAR(100),
     nm_cidade VARCHAR(200),
@@ -235,7 +229,7 @@ CREATE TABLE Cidade (
     CONSTRAINT fk_pais_estado_nm FOREIGN KEY (nm_pais, nm_estado) REFERENCES Estado(nm_pais, nm_estado) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE Cargo (
+CREATE TABLE IF NOT EXISTS Cargo (
     id_cargo SERIAL PRIMARY KEY,
     nm_pais VARCHAR(100),
     nm_estado VARCHAR(100) DEFAULT NULL,
@@ -260,10 +254,10 @@ CREATE TABLE Cargo (
 );
 
 -- talvez colocar um ds_status pra decidir se eleito ou não, e escrever um trigger para, por exemplo, eleger 1 presidente pelo mais votado, 500 deputados...
-CREATE TABLE Candidatura (
+CREATE TABLE IF NOT EXISTS Candidatura (
     id_candidatura SERIAL PRIMARY KEY,
-    nr_cpf_candidato NUMERIC(11) NOT NULL UNIQUE,
-    nr_cpf_vice NUMERIC(11),
+    nr_cpf_candidato NUMERIC(14) NOT NULL UNIQUE,
+    nr_cpf_vice NUMERIC(14),
     id_cargo INTEGER,
     an_eleicao NUMERIC(4),
     nr_pleito INTEGER,
@@ -275,7 +269,7 @@ CREATE TABLE Candidatura (
     CONSTRAINT fk_cargo_id FOREIGN KEY (id_cargo) REFERENCES Cargo(id_cargo) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
-CREATE TABLE Equipe_de_apoio (
+CREATE TABLE IF NOT EXISTS Equipe_de_apoio (
     id_equipe SERIAL,
     id_candidatura INTEGER,
     nm_equipe VARCHAR(200) NOT NULL,
@@ -285,8 +279,8 @@ CREATE TABLE Equipe_de_apoio (
     CONSTRAINT un_equipe_ano UNIQUE (nm_equipe, an_eleicao)
 );
 
-CREATE TABLE Apoiador_Equipe (
-    nr_cpf NUMERIC(11),
+CREATE TABLE IF NOT EXISTS Apoiador_Equipe (
+    nr_cpf NUMERIC(14),
     id_equipe INTEGER,
     an_eleicao NUMERIC(4),
     PRIMARY KEY (nr_cpf, id_equipe),
@@ -295,26 +289,26 @@ CREATE TABLE Apoiador_Equipe (
     CONSTRAINT un_cpf_an UNIQUE (nr_cpf, an_eleicao)
 );
 
-CREATE TABLE Empresa (
+CREATE TABLE IF NOT EXISTS Empresa (
     nr_cnpj NUMERIC(14) PRIMARY KEY,
     nm_empresa VARCHAR(200)
 );
 
-CREATE TABLE Candidatura_doacoes_PJ (
-    nr_cnpj_doador NUMERIC(11),
+CREATE TABLE IF NOT EXISTS Candidatura_doacoes_PJ (
+    nr_cnpj_doador NUMERIC(14),
     id_candidatura INTEGER,
     dt_doacao DATE NOT NULL,
-    vl_doacao MONEY NOT NULL,
+    vl_doacao INTEGER NOT NULL,
     PRIMARY KEY (nr_cnpj_doador, id_candidatura, dt_doacao),
     CONSTRAINT fk_cnpj_nr FOREIGN KEY (nr_cnpj_doador) REFERENCES Empresa(nr_cnpj) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT fk_candidatura_id FOREIGN KEY (id_candidatura) REFERENCES Candidatura(id_candidatura) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
-CREATE TABLE Candidatura_doacoes_PF (
-    nr_cpf_doador NUMERIC(11),
+CREATE TABLE IF NOT EXISTS Candidatura_doacoes_PF (
+    nr_cpf_doador NUMERIC(14),
     id_candidatura INTEGER,
     dt_doacao DATE NOT NULL,
-    vl_doacao MONEY NOT NULL,
+    vl_doacao INTEGER NOT NULL,
     PRIMARY KEY (nr_cpf_doador, id_candidatura, dt_doacao),
     CONSTRAINT fk_cpf_nr FOREIGN KEY (nr_cpf_doador) REFERENCES Doador(nr_cpf) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT fk_candidatura_id FOREIGN KEY (id_candidatura) REFERENCES Candidatura(id_candidatura) ON DELETE SET NULL ON UPDATE CASCADE

@@ -1,8 +1,70 @@
 {% extends 'base.html' %}
 
-{% block head %}
-{% endblock %}
+{% block title %}Candidaturas - Sistema Eleitoral{% endblock %}
 
-{% block body%}
-<h1> Template </h1>
-{% endblock %}    
+{% block content %}
+<h1>Candidaturas</h1>
+<p> Nessa página é possível visualizar todas as candidaturas.</p>
+
+<form id="column-form" action="/candidatura_order" method="post" style="display: none;">
+    <input type="hidden" name="column" id="column-input">
+</form>
+
+<table class="table" id="candidaturas-table">
+    <thead>
+        <tr>
+            {% for colname in colnames %}
+                <th>
+                    <a href="#" class="column-link" data-column="{{ colname }}">{{ colname }}</a>
+                </th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+        <tr>
+            {% for item in row %}
+                <td>{{ item }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const columnLinks = document.querySelectorAll(".column-link");
+
+        columnLinks.forEach(link => {
+            link.addEventListener("click", function(event) {
+                event.preventDefault();
+
+                const columnName = this.getAttribute("data-column");
+                const columnInput = document.getElementById("column-input");
+
+                columnInput.value = columnName;
+
+                const form = document.getElementById("column-form");
+                form.submit();
+            });
+        });
+    });
+</script>
+
+
+<!-- <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Select all cells in the second column (index 1)
+    const table = document.getElementById('candidaturas-table');
+    const cells = table.querySelectorAll('tbody tr td:nth-child(2)');
+
+    cells.forEach(cell => {
+        cell.addEventListener('click', function() {
+            // Handle the click event
+            alert('Coluna clicada: ' + cell.textContent);
+            // Você pode enviar uma requisição AJAX ou fazer outras ações aqui
+        });
+    });
+});
+</script> -->
+{% endblock %}

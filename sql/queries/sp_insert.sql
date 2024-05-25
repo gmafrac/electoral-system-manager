@@ -13,7 +13,7 @@ END;
 $$;
 
 CREATE OR REPLACE PROCEDURE sp_insert_individuo(
-    v_nr_cpf NUMERIC(11),
+    v_nr_cpf NUMERIC(15),
     v_nm_pessoa VARCHAR(200),
     v_ds_tipo VARCHAR(10) DEFAULT NULL
 )
@@ -27,7 +27,7 @@ $$;
 
 CREATE OR REPLACE PROCEDURE sp_insert_processo_individuo(
     v_id_processo INTEGER,
-    v_nr_cpf NUMERIC(11)
+    v_nr_cpf NUMERIC(14)
 )
 LANGUAGE plpgsql
 AS $$
@@ -38,7 +38,7 @@ END;
 $$;
 
 CREATE OR REPLACE PROCEDURE sp_insert_apoiador(
-    v_nr_cpf NUMERIC(11)
+    v_nr_cpf NUMERIC(14)
 )
 LANGUAGE plpgsql
 AS $$
@@ -49,7 +49,7 @@ END;
 $$;
 
 CREATE OR REPLACE PROCEDURE sp_insert_doador(
-    v_nr_cpf NUMERIC(11)
+    v_nr_cpf NUMERIC(14)
 )
 LANGUAGE plpgsql
 AS $$
@@ -75,7 +75,7 @@ END;
 $$;
 
 CREATE OR REPLACE PROCEDURE sp_insert_candidato(
-    v_nr_cpf NUMERIC(11),
+    v_nr_cpf NUMERIC(14),
     v_nr_partido NUMERIC(2),
     v_an_eleicao NUMERIC(4)
 )
@@ -129,8 +129,8 @@ END;
 $$;
 
 CREATE OR REPLACE PROCEDURE sp_insert_candidatura(
-    v_nr_cpf_candidato NUMERIC(11),
-    v_nr_cpf_vice NUMERIC(11),
+    v_nr_cpf_candidato NUMERIC(14),
+    v_nr_cpf_vice NUMERIC(14),
     v_id_cargo INTEGER,
     v_an_eleicao NUMERIC(4),
     v_nr_pleito INTEGER
@@ -157,7 +157,7 @@ END;
 $$;
 
 CREATE OR REPLACE PROCEDURE sp_insert_apoiador_equipe(
-    v_nr_cpf NUMERIC(11),
+    v_nr_cpf NUMERIC(14),
     v_id_equipe INTEGER,
     v_an_eleicao NUMERIC(4)
 )
@@ -170,7 +170,7 @@ END;
 $$;
 
 CREATE OR REPLACE PROCEDURE sp_insert_empresa(
-    v_nr_cnpj NUMERIC(14),
+    v_nr_cnpj BIGINT,
     v_nm_empresa VARCHAR(200)
 )
 LANGUAGE plpgsql
@@ -182,10 +182,10 @@ END;
 $$;
 
 CREATE OR REPLACE PROCEDURE sp_insert_candidatura_doacoes_pj(
-    v_nr_cnpj_doador NUMERIC(11),
+    v_nr_cnpj_doador NUMERIC(14),
     v_id_candidatura INTEGER,
     v_dt_doacao DATE,
-    v_vl_doacao MONEY
+    v_vl_doacao INTEGER
 )
 LANGUAGE plpgsql
 AS $$
@@ -196,10 +196,10 @@ END;
 $$;
 
 CREATE OR REPLACE PROCEDURE sp_insert_candidatura_doacoes_pf(
-    v_nr_cpf_doador NUMERIC(11),
+    v_nr_cpf_doador NUMERIC(14),
     v_id_candidatura INTEGER,
     v_dt_doacao DATE,
-    v_vl_doacao MONEY
+    v_vl_doacao INTEGER
 )
 LANGUAGE plpgsql
 AS $$
