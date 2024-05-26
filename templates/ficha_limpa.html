@@ -1,8 +1,32 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block head %}
+{% block title %}Ficha Limpa - Sistema Eleitoral{% endblock %}
+
+{% block content %}
+<h2>Ficha Limpa</h2>
+<p> Lista todos os candidatos ficha limpa.</p>
+
+<div style="overflow-x:auto;">
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                {% for colname in colnames %}
+                    <th>{{ colname }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                {% for item in row %}
+                    <td>{{ item }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</script>
 {% endblock %}
-
-{% block body%}
-<h1> Template </h1>
-{% endblock %}    

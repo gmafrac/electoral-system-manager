@@ -84,8 +84,8 @@ def db_initialization():
                 
                 conn.commit()
                 
-                cur.execute("SELECT update_election_results(2024);")    
-                cur.execute("SELECT update_processo_status();")
+                # cur.execute("SELECT update_election_results(2024);")    
+                # cur.execute("SELECT update_processo_status();")
                 
                 conn.commit()
                 cur.close()

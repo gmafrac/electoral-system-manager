@@ -1,31 +1,52 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %}Candidaturas - Sistema Eleitoral{% endblock %}
+{% block title %}Relatórios - Sistema Eleitoral{% endblock %}
 
 {% block content %}
-<h1>Candidaturas</h1>
-<p> Nessa página é possível visualizar todas as candidaturas.</p>
+<h2>Relatórios</h2>
+<p> Lista os presidentes, deputados e senadores eleitos.</p>
 
+<div class="row">
+    <div class="col">
+        <form method="POST">
+            <label for="table">Selecione o cargo:</label>
+            <select name="table" id="table" onchange="changeTable()">
+                <option value="Presidente">Presidente</option>
+                <option value="Senador">Senador</option>
+                <option value="Deputado Federal">Deputado Federal</option>
+            </select>
+        </form>
+    </div>
+</div>
 
-<table class="table" id="relatorios-table">
-    <thead>
-        <tr>
-            {% for colname in colnames %}
-                <th>
-                    <a href="#" class="column-link" data-column="{{ colname }}">{{ colname }}</a>
-                </th>
+<input type="hidden" name="table" value="{{ public_office }}">
+
+<div style="overflow-x:auto;">
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                {% for colname in colnames %}
+                    <th>{{ colname }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                {% for item in row %}
+                    <td>{{ item }}</td>
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-        {% for row in data %}
-        <tr>
-            {% for item in row %}
-                <td>{{ item }}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
 
-{% endblock %}    
+<script>
+function changeTable() {
+    document.querySelector("form").submit();
+}
+
+</script>
+{% endblock %}

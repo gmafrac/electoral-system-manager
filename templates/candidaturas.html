@@ -3,8 +3,8 @@
 {% block title %}Candidaturas - Sistema Eleitoral{% endblock %}
 
 {% block content %}
-<h1>Candidaturas</h1>
-<p> Nessa página é possível visualizar todas as candidaturas.</p>
+<h2>Candidaturas</h2>
+<p>Nessa página é possível visualizar todas as candidaturas.</p>
 
 <form id="column-form" action="/candidatura_order" method="post" style="display: none;">
     <input type="hidden" name="column" id="column-input">
@@ -51,20 +51,4 @@
     });
 </script>
 
-
-<!-- <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Select all cells in the second column (index 1)
-    const table = document.getElementById('candidaturas-table');
-    const cells = table.querySelectorAll('tbody tr td:nth-child(2)');
-
-    cells.forEach(cell => {
-        cell.addEventListener('click', function() {
-            // Handle the click event
-            alert('Coluna clicada: ' + cell.textContent);
-            // Você pode enviar uma requisição AJAX ou fazer outras ações aqui
-        });
-    });
-});
-</script> -->
 {% endblock %}

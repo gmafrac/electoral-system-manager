@@ -3,21 +3,23 @@
 {% block title %}Home - Sistema Eleitoral{% endblock %}
 
 {% block content %}
-<h1>Consulta</h1>
+<h2>Consulta</h2>
 <p> Nessa página é possível listar e remover todos os dados do sistema eleitoral.</p>
-<div class="row">
-    <div class="col">
-        <form method="POST">
-            <label for="table">Selecione a tabela:</label>
-            <select name="table" id="table" onchange="changeTable()">
-                {% for table in tables %}
-                    <option value="{{ table }}" {% if table == selected_table %}selected{% endif %}>{{ table }}</option>
-                {% endfor %}
-            </select>
-        </form>
-    </div>
-    <div class="col">
-        <button type="button" onclick="confirmDeletion()">Deletar</button>
+<div class="center-div">
+    <div class="row">
+        <div class="row mr-5">
+            <form method="POST">
+                <label for="table">Selecione a tabela:</label>
+                <select name="table" id="table" onchange="changeTable()">
+                    {% for table in tables %}
+                        <option value="{{ table }}" {% if table == selected_table %}selected{% endif %}>{{ table }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+        <div class="col">
+            <button type="button" onclick="confirmDeletion()">Deletar</button>
+        </div>
     </div>
 </div>
 
