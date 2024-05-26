@@ -8,6 +8,7 @@ BASE_PATH="sql/"
 QUERIES_PATH="queries/"    
 EXCEL_FILE_PATH="dados_bd.xlsx"
 DROP_BD="drop_bd.sql"
+
 SQL_PATHS={
     "DDL": "ddl_create_tables.sql",
     "SP_INSERT": "sp_insert.sql",
@@ -76,10 +77,16 @@ def db_initialization():
                         print(f"Log: {error} from {sql_path}")
                 
                 sheets_dict = read_excel_file(BASE_PATH+EXCEL_FILE_PATH)
-            
+                
                 for sheet_name, df in sheets_dict.items():
                     insert_data_from_df(cur, df, f"sp_insert_{sheet_name.lower()}")
                     print(f"LOG: Value was insered in the {sheet_name}..") 
+                
+                conn.commit()
+                
+                cur.execute("SELECT update_election_results(2024);")    
+                cur.execute("SELECT update_processo_status();")
+                
                 conn.commit()
                 cur.close()
                 

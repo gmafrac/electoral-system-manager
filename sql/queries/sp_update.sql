@@ -127,26 +127,26 @@ BEGIN
 END;
 $$;
 
-CREATE OR REPLACE PROCEDURE sp_update_candidatura(
-    v_id_candidatura INTEGER,
-    v_nr_cpf_candidato NUMERIC(11) DEFAULT NULL,
-    v_nr_cpf_vice NUMERIC(11) DEFAULT NULL,
-    v_id_cargo INTEGER DEFAULT NULL,
-    v_an_eleicao NUMERIC(4) DEFAULT NULL,
-    v_nr_pleito INTEGER DEFAULT NULL
-)
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    UPDATE Candidatura
-    SET nr_cpf_candidato = COALESCE(v_nr_cpf_candidato, nr_cpf_candidato),
-        nr_cpf_vice = COALESCE(v_nr_cpf_vice, nr_cpf_vice),
-        id_cargo = COALESCE(v_id_cargo, id_cargo),
-        an_eleicao = COALESCE(v_an_eleicao, an_eleicao),
-        nr_pleito = COALESCE(v_nr_pleito, nr_pleito)
-    WHERE id_candidatura = v_id_candidatura;
-END;
-$$;
+-- CREATE OR REPLACE PROCEDURE sp_update_candidatura(
+--     v_id_candidatura INTEGER,
+--     v_nr_cpf_candidato NUMERIC(11) DEFAULT NULL,
+--     v_nr_cpf_vice NUMERIC(11) DEFAULT NULL,
+--     v_id_cargo INTEGER DEFAULT NULL,
+--     v_an_eleicao NUMERIC(4) DEFAULT NULL,
+--     v_nr_pleito INTEGER DEFAULT NULL
+-- )
+-- LANGUAGE plpgsql
+-- AS $$
+-- BEGIN
+--     UPDATE Candidatura
+--     SET nr_cpf_candidato = COALESCE(v_nr_cpf_candidato, nr_cpf_candidato),
+--         nr_cpf_vice = COALESCE(v_nr_cpf_vice, nr_cpf_vice),
+--         id_cargo = COALESCE(v_id_cargo, id_cargo),
+--         an_eleicao = COALESCE(v_an_eleicao, an_eleicao),
+--         nr_pleito = COALESCE(v_nr_pleito, nr_pleito)
+--     WHERE id_candidatura = v_id_candidatura;
+-- END;
+-- $$;
 
 CREATE OR REPLACE PROCEDURE sp_update_equipe_de_apoio(
     v_id_equipe INTEGER,

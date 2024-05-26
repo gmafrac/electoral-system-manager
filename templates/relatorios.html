@@ -1,8 +1,31 @@
 {% extends 'base.html' %}
 
-{% block head %}
-{% endblock %}
+{% block title %}Candidaturas - Sistema Eleitoral{% endblock %}
 
-{% block body%}
-<h1> Template </h1>
+{% block content %}
+<h1>Candidaturas</h1>
+<p> Nessa página é possível visualizar todas as candidaturas.</p>
+
+
+<table class="table" id="relatorios-table">
+    <thead>
+        <tr>
+            {% for colname in colnames %}
+                <th>
+                    <a href="#" class="column-link" data-column="{{ colname }}">{{ colname }}</a>
+                </th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+        <tr>
+            {% for item in row %}
+                <td>{{ item }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}    
