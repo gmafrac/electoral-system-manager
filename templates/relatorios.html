@@ -4,28 +4,31 @@
 
 {% block content %}
 <h2>Relatórios</h2>
-<p> Lista os presidentes, deputados e senadores eleitos.</p>
+<p> Lista os candidatos eleitos em 2024.</p>
 
 <div class="row">
     <div class="col">
         <form method="POST">
             <label for="table">Selecione o cargo:</label>
             <select name="table" id="table" onchange="changeTable()">
-                <option value="Presidente">Presidente</option>
-                <option value="Senador">Senador</option>
-                <option value="Deputado Federal">Deputado Federal</option>
+                <option value="Presidente" {% if public_office == "Presidente" %}selected{% endif %}>Presidente</option>
+                <option value="Vice Presidente" {% if public_office == "Vice Presidente" %}selected{% endif %}>Vice Presidente</option>
+                <option value="Senador" {% if public_office == "Senador" %}selected{% endif %}>Senador</option>
+                <option value="Deputado Federal" {% if public_office == "Deputado Federal" %}selected{% endif %}>Deputado Federal</option>
+                <option value="Governador" {% if public_office == "Governador" %}selected{% endif %}>Governador</option>
+                <option value="Deputado Estadual" {% if public_office == "Deputado Estadual" %}selected{% endif %}>Deputado Estadual</option>
+                <option value="Prefeito" {% if public_office == "Prefeito" %}selected{% endif %}>Prefeito</option>
+                <option value="Vice Prefeito" {% if public_office == "Vice Prefeito" %}selected{% endif %}>Vice Prefeito</option>
+                <option value="Vereador" {% if public_office == "Vereador" %}selected{% endif %}>Vereador</option>
             </select>
         </form>
     </div>
 </div>
 
-<input type="hidden" name="table" value="{{ public_office }}">
-
 <div style="overflow-x:auto;">
     <table class="table">
         <thead>
             <tr>
-                <th></th>
                 {% for colname in colnames %}
                     <th>{{ colname }}</th>
                 {% endfor %}

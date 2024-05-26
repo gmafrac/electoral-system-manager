@@ -35,6 +35,11 @@ body {
     color: white !important;
 }
 
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
 .container {
     margin-top: 30px;
 }

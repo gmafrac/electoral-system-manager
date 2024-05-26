@@ -22,6 +22,80 @@ SQL_PATHS={
     "SP_DELETE": "sp_delete.sql",
 }
 
+
+dicionario_campos = {
+    "id_processo": "ID do Processo",
+    "dt_inicio": "Data de Início",
+    "dt_fim": "Data de Fim",
+    "ds_procedencia": "Procedência",
+    "st_processo": "Status do Processo",
+    "nr_cpf": "CPF",
+    "nm_pessoa": "Nome",
+    "ds_tipo": "Tipo",
+    "nr_partido": "Número do Partido",
+    "nm_partido": "Nome do Partido",
+    "ds_sigla": "Sigla",
+    "ds_programa": "Programa",
+    "ds_intencoes": "Intenções",
+    "an_eleicao": "Ano da Eleição",
+    "nm_pais": "País",
+    "sigla_pais": "Sigla do País",
+    "nm_estado": "Estado",
+    "sigla_estado": "Sigla do Estado",
+    "nm_cidade": "Cidade",
+    "id_cargo": "ID do Cargo",
+    "nm_cargo": "Nome do Cargo",
+    "ds_representacao": "Representação",
+    "id_candidatura": "ID da Candidatura",
+    "nr_cpf_candidato": "CPF do Candidato",
+    "nr_cpf_vice": "CPF do Vice",
+    "nr_pleito": "Número do Pleito",
+    "ds_status": "Status",
+    "id_equipe": "ID da Equipe",
+    "nm_equipe": "Nome da Equipe",
+    "nr_cnpj": "CNPJ",
+    "nm_empresa": "Nome da Empresa",
+    "nr_cnpj_doador": "CNPJ do Doador",
+    "dt_doacao": "Data da Doação",
+    "vl_doacao": "Valor da Doação",
+    "nr_cpf_doador": "CPF do Doador",
+    "id_candidatura": "ID da Candidatura"
+}
+
+dicionario_campos_inv = {v: k for k, v in dicionario_campos.items()}
+
+TABLES = {
+    "processo_judicial": ["id_processo"],
+    "individuo": ["nr_cpf"],
+    "processo_individuo": ["id_processo", "nr_cpf"],
+    "apoiador": ["nr_cpf"],
+    "doador": ["nr_cpf"],
+    "partido": ["nr_partido"],
+    "candidato": ["nr_cpf"],
+    "pais": ["nm_pais"],
+    "estado": ["nm_pais", "nm_estado"],
+    "cidade": ["nm_pais", "nm_estado", "nm_cidade"],
+    "cargo": ["id_cargo"],
+    "candidatura": ["id_candidatura"],
+    "equipe_de_apoio": ["id_equipe", "an_eleicao"],
+    "apoiador_Equipe": ["nr_cpf", "id_equipe"],
+    "empresa": ["nr_cnpj"],
+    "candidatura_doacoes_PJ": ["nr_cnpj_doador", "id_candidatura", "dt_doacao"],
+    "candidatura_doacoes_PF": ["nr_cpf_doador", "id_candidatura", "dt_doacao"]
+}
+
+cargos_vagas = {
+    "Presidente": 1,
+    "Vice Presidente": 1,
+    "Senador": 81,  
+    "Deputado Federal": 513,
+    "Governador": 27,  
+    "Deputado Estadual": 500,
+    "Prefeito": 40,  
+    "Vice Prefeito": 40,
+    "Vereador": 300
+}
+
 def read_excel_file(file_path):
     xls = pd.ExcelFile(file_path)
     sheets_dict = {}
@@ -81,11 +155,6 @@ def db_initialization():
                 for sheet_name, df in sheets_dict.items():
                     insert_data_from_df(cur, df, f"sp_insert_{sheet_name.lower()}")
                     print(f"LOG: Value was insered in the {sheet_name}..") 
-                
-                conn.commit()
-                
-                # cur.execute("SELECT update_election_results(2024);")    
-                # cur.execute("SELECT update_processo_status();")
                 
                 conn.commit()
                 cur.close()
